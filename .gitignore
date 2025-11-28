@@ -1,0 +1,17 @@
+# Kubernetes secrets
+**/secret.yaml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Sensitive configuration
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Service account credentials
+**/credentials.json
+**/service-account*.json

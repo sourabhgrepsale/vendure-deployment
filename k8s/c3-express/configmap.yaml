@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: c3-express-config
+  namespace: c3-express
+data:
+  PORT: "3000"
+  WHITE_LABEL_MAIN_DOMAIN: "geminatesolutions.com"
+  SERVER_IP: "0.0.0.0" # set to your server IP if used by app
+
+
