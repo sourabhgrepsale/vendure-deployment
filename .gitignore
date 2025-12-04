@@ -1,5 +1,7 @@
 # Kubernetes secrets
 **/secret.yaml
+**/secret.example.yaml
+
 
 # Environment files
 .env
