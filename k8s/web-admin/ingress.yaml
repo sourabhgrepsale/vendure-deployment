@@ -1,0 +1,50 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webadmin
+  namespace: webadmin
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - websiteadmin.appwallah.com
+        - vnd.dotc3.com
+      secretName: webadmin-tls
+    - hosts:
+        - webadmin2.appwallah.com
+      secretName: webadmin2-tls
+  rules:
+    - host: websiteadmin.appwallah.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webadmin
+                port:
+                  number: 80
+    - host: vnd.dotc3.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webadmin
+                port:
+                  number: 80
+    - host: webadmin2.appwallah.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webadmin
+                port:
+                  number: 80
+

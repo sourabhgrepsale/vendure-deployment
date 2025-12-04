@@ -1,0 +1,145 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: storefront
+  namespace: storefront
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~ /.well-known/acme-challenge/ {
+        return 200;
+      }
+      location = /cainterresults {
+        return 301 https://forms.gle/8rByHdhaJwwdAwq97;
+      }
+      location = /cafinalresults {
+        return 301 https://forms.gle/aVc8ajAS3AKcjuUA6;
+      }
+      location = /cafoundationresults {
+        return 301 https://forms.gle/4d23wRSxYDRpwv4V8;
+      }
+      location = /websitelog {
+        return 301 https://forms.gle/5SFh6FxVk7UjtSyr6;
+      }
+      location = /support/techsupport {
+        return 301 https://forms.gle/YWcnXVZr2WFP3LWj8;
+      }
+      location = /blog/ca-inter-all-in-one/ {
+        return 301 $scheme://$host/courses2/ca-inter;
+      }
+      location /faculty/CA%20Vishal%20Bhattad%20Sir {
+        return 301 $scheme://$host/faculty2/vishal-bhattad;
+      }
+      location /ca-inter-online-classes {
+        return 301 $scheme://$host/courses2/ca-inter;
+      }
+      location /ca-foundation-classes {
+        return 301 $scheme://$host/courses2/ca-foundation;
+      }
+      location /ca-final-classes {
+        return 301 $scheme://$host/courses2/ca-final;
+      }
+      location /ca-final-online-classes {
+        return 301 $scheme://$host/courses2/ca-final;
+      }
+      location = /vsmart-player-setup {
+        return 301 https://grepvideos-apk.b-cdn.net/downloader/vsmartsupport/index.html;
+      }
+      if ($host = studentlogin.vsmartacademy.com) {
+        set $test_login A;
+      }
+      if ($uri = /login) {
+        set $test_login "${test_login}B";
+      }
+      if ($uri = /) {
+        set $test_login "${test_login}C";
+      }
+      if ($test_login = AB) {
+        return 301 $scheme://vsmartacademy.com/login2;
+      }
+      if ($test_login = AC) {
+        return 301 $scheme://vsmartacademy.com/login2;
+      }
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - storefront2.appwallah.com
+      secretName: storefront2-tls
+    - hosts:
+        - preprod.appwallah.com
+      secretName: preprod-tls
+    - hosts:
+        - preprod.vsmartacademy.com
+      secretName: vsmartpreprod-tls
+    - hosts:
+        - vsmartacademy.com
+        - www.vsmartacademy.com
+      secretName: vsmart-tls
+    - hosts:
+        - studentlogin.vsmartacademy.com
+      secretName: studentlogin-temp-tls
+  rules:
+    - host: storefront2.appwallah.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storefront
+                port:
+                  number: 80
+    - host: preprod.appwallah.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storefront
+                port:
+                  number: 80
+    - host: preprod.vsmartacademy.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storefront
+                port:
+                  number: 80
+    - host: vsmartacademy.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storefront
+                port:
+                  number: 80
+    - host: www.vsmartacademy.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storefront
+                port:
+                  number: 80
+    - host: studentlogin.vsmartacademy.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: storefront
+                port:
+                  number: 80
+
+

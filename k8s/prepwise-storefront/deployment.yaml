@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prepwise-storefront
+  namespace: prepwise-storefront
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prepwise-storefront
+  template:
+    metadata:
+      labels:
+        app: prepwise-storefront
+    spec:
+      imagePullSecrets:
+        - name: do-regcred
+      containers:
+        - name: app
+          image: registry.digitalocean.com/grepvideos-server/prepwise-storefront:v1-amd64
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: prepwise-storefront-config
+            - secretRef:
+                name: prepwise-storefront-secrets
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+
+
