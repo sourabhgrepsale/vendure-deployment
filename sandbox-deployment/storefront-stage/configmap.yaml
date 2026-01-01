@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storefront-config
+  namespace: storefrontstage
+data:
+  NODE_ENV: "production"
+  PORT: "8080"
+  GRAPHQL_API_URL: "http://c3-prod.grepvideos.com:5000/shop-api"
+  VENDURE_API_URL: "http://c3-prod.grepvideos.com:5000/shop-api?vendure-token=vsmart-seller"
+  META_TITLE: "C3 Classes Stage"
+
+

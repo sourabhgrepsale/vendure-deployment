@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c3-express
+  namespace: c3-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: c3-express
+  template:
+    metadata:
+      labels:
+        app: c3-express
+    spec:
+      imagePullSecrets:
+        - name: do-regcred
+      containers:
+        - name: app
+          image: registry.digitalocean.com/grepvideos-server/c3-express:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: c3-express-config
+            - secretRef:
+                name: c3-express-secrets
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+
+

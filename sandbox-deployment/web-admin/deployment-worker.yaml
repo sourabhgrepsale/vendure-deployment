@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webadmin-worker
+  namespace: webadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webadmin-worker
+  template:
+    metadata:
+      labels:
+        app: webadmin-worker
+    spec:
+      imagePullSecrets:
+        - name: do-regcred
+      containers:
+        - name: worker
+          image: registry.digitalocean.com/grepvideos-server/webadmin:v7
+          imagePullPolicy: IfNotPresent
+          command: ["node", "./dist/index-worker.js"]
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: webadmin-config
+            - secretRef:
+                name: webadmin-secrets
+

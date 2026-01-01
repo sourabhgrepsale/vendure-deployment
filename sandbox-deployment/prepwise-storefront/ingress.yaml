@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prepwise-storefront
+  namespace: prepwise-storefront
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - sandbox-prepwise.dotc3.com
+      secretName: sandbox-prepwise-tls
+  rules:
+    - host: sandbox-prepwise.dotc3.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prepwise-storefront
+                port:
+                  number: 80
+
+
+

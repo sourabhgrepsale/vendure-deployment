@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storefront-config
+  namespace: storefront
+data:
+  NODE_ENV: "production"
+  PORT: "8080"
+  # GraphQL API URL for storefront (Vendure shop API) - internal cluster service
+  GRAPHQL_API_URL: "http://webadmin.webadmin.svc.cluster.local/shop-api"
+  VENDURE_API_URL: "http://webadmin.webadmin.svc.cluster.local/shop-api?vendure-token=vsmart-seller"
+  # Optional customizations
+  META_TITLE: "C3 Classes"
+
+

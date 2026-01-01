@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: webadmin
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - pvc-assets.yaml
+  - deployment-server.yaml
+  - deployment-worker.yaml
+  - service.yaml
+  - ingress.yaml
+

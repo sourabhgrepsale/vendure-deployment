@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: c3-express-job
+  namespace: c3-express
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+            - name: do-regcred
+          restartPolicy: Never
+          containers:
+            - name: job
+              image: registry.digitalocean.com/grepvideos-server/c3-express:latest
+              imagePullPolicy: IfNotPresent
+              command: ["node", "./dist/job-app.js"]
+              envFrom:
+                - configMapRef:
+                    name: c3-express-config
+                - secretRef:
+                    name: c3-express-secrets
+
+

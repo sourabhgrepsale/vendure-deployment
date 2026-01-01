@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webadmin-server
+  namespace: webadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webadmin-server
+  template:
+    metadata:
+      labels:
+        app: webadmin-server
+    spec:
+      imagePullSecrets:
+        - name: do-regcred
+      containers:
+        - name: server
+          image: registry.digitalocean.com/grepvideos-server/webadmin:v7
+          imagePullPolicy: IfNotPresent
+          command: ["node", "--max-old-space-size=2048", "./dist/index.js"]
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "1Gi"
+            limits:
+              cpu: "1500m"
+              memory: "2.5Gi"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: webadmin-config
+            - secretRef:
+                name: webadmin-secrets
+          volumeMounts:
+            - name: assets
+              mountPath: /usr/src/app/static/assets
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 90
+            periodSeconds: 20
+            timeoutSeconds: 3
+      volumes:
+        - name: assets
+          persistentVolumeClaim:
+            claimName: webadmin-assets-pvc
+
