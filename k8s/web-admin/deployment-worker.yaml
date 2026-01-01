@@ -17,9 +17,9 @@ spec:
         - name: do-regcred
       containers:
         - name: worker
-          image: registry.digitalocean.com/grepvideos-server/webadmin:v3
+          image: registry.digitalocean.com/grepvideos-server/webadmin:v7
           imagePullPolicy: IfNotPresent
-          command: ["node", "./dist/index-worker.js"]
+          command: ["node", "--max-old-space-size=768", "./dist/index-worker.js"]
           resources:
             requests:
               cpu: "500m"

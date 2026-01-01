@@ -22,8 +22,8 @@ spec:
           command: ["node", "--max-old-space-size=6144", "./dist/index.js"]
           resources:
             requests:
-              cpu: "3"
-              memory: "4Gi"
+              cpu: "4"
+              memory: "6Gi"
             limits:
               cpu: "6"
               memory: "8Gi"
